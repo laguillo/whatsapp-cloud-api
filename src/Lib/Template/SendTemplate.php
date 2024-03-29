@@ -10,7 +10,7 @@ use Sdkconsultoria\WhatsappCloudApi\Services\MessageService;
 
 class SendTemplate
 {
-    public function Send(WabaPhone $wabaPhone, Template $template, string $to, array $vars = [], $sendedBy = null)
+    public function Send(WabaPhone $wabaPhone, Template $template, string $to, array $vars = [], $sentBy = null)
     {
         $template->setVars($vars);
         $message = resolve(MessageService::class)
@@ -23,7 +23,7 @@ class SendTemplate
         $messageModel->message_id = $message['messages'][0]['id'];
         $messageModel->type = 'template';
         $messageModel->chat_id = $this->getChatId($wabaPhone, $to);
-        $messageModel->sended_by = $sendedBy;
+        $messageModel->sended_by = $sentBy;
         $messageModel->save();
     }
 

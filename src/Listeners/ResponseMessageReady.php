@@ -32,8 +32,7 @@ class ResponseMessageReady
                     'body' => $message,
                     'preview_url' => false,
                 ],
-
             ],
-        ]);
+        ], 'BOT');
     }
 }

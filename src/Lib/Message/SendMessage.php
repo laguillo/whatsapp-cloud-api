@@ -13,16 +13,16 @@ class SendMessage
 {
     private array $processedMessage = [];
 
-    public function Send(array $request): void
+    public function Send(array $request, $sentBy = null): void
     {
-        $messageModel = $this->createNewMessage($request);
+        $messageModel = $this->createNewMessage($request, $sentBy);
         $processedMessage = $this->processMessage($messageModel, $request['message']);
         $messageResponse = resolve(MessageService::class)
             ->sendMessage($messageModel->chat->wabaPhone->phone_id, $request['to'], $processedMessage);
         $this->finishMessage($messageModel, $messageResponse, $processedMessage);
     }
 
-    private function createNewMessage(array $request): Message
+    private function createNewMessage(array $request, $sentBy = null): Message
     {
         $phoneNumber = WabaPhone::find($request['waba_phone_id']);
         $message = new Message();
@@ -31,6 +31,7 @@ class SendMessage
         $message->timestamp = time();
         $message->type = $request['message']['type'];
         $message->chat_id = $this->getChatId($phoneNumber, $request['to'])->id;
+        $message->sended_by = $sentBy;
         $message->save();
 
         return $message;
