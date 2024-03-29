@@ -3,6 +3,7 @@
 namespace Sdkconsultoria\WhatsappCloudApi\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
+use Sdkconsultoria\OpenAiApi\ServiceProvider as OpenAiServiceProvider;
 use Sdkconsultoria\WhatsappCloudApi\ServiceProvider;
 use Sdkconsultoria\WhatsappCloudApi\WhatsappCloudApi;
 
@@ -49,6 +50,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             ServiceProvider::class,
+            OpenAiServiceProvider::class,
         ];
     }
 

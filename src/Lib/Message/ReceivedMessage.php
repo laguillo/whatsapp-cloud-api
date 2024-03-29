@@ -3,6 +3,7 @@
 namespace Sdkconsultoria\WhatsappCloudApi\Lib\Message;
 
 use Sdkconsultoria\WhatsappCloudApi\Events\NewWhatsappMessageHook;
+use Sdkconsultoria\WhatsappCloudApi\Jobs\SendToOpenApi;
 use Sdkconsultoria\WhatsappCloudApi\Models\Chat;
 use Sdkconsultoria\WhatsappCloudApi\Models\Message;
 use Sdkconsultoria\WhatsappCloudApi\Models\WabaPhone;
@@ -24,6 +25,7 @@ class ReceivedMessage
             case 'text':
                 $this->processIfIsResponse($content);
                 $this->processTextMessage($chat, $content);
+                SendToOpenApi::dispatch($chat, $content);
                 break;
             case 'document':
             case 'sticker':

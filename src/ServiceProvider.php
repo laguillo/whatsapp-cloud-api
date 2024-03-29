@@ -4,8 +4,11 @@ namespace Sdkconsultoria\WhatsappCloudApi;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Sdkconsultoria\OpenAiApi\Events\MessageReady;
+use Sdkconsultoria\WhatsappCloudApi\Listeners\ResponseMessageReady;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -20,6 +23,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->registerCustomFactory();
         $this->registerCommands();
         $this->registerRouteMacro();
+        $this->registerEvents();
     }
 
     private function registerBroadcasting(): void
@@ -83,6 +87,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             Route::get("{$uri}/{id}", "{$controller}@show")->name("{$uri}.show");
             Route::delete("{$uri}/{id}", "{$controller}@destroy")->name("{$uri}.destroy");
         });
+    }
+
+    private function registerEvents(): void
+    {
+        Event::listen(
+            MessageReady::class,
+            ResponseMessageReady::class,
+        );
     }
 
     /**

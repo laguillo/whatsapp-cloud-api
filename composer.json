@@ -18,7 +18,8 @@
     "require": {
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.8",
-        "pusher/pusher-php-server": "^7.2"
+        "pusher/pusher-php-server": "^7.2",
+        "sdkconsultoria/open-ai-api": "dev-develop"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0.6",
@@ -47,5 +48,6 @@
             }
         }
     },
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

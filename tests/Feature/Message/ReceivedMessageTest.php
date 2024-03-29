@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Mockery\MockInterface;
+use Sdkconsultoria\OpenAiApi\Events\MessageReady;
+use Sdkconsultoria\OpenAiApi\Models\Assistant;
+use Sdkconsultoria\OpenAiApi\Tests\Fake\RunFakeResponses;
+use Sdkconsultoria\OpenAiApi\Tests\Fake\ThreadFakeResponses;
 use Sdkconsultoria\WhatsappCloudApi\Events\NewWhatsappMessageHook;
+use Sdkconsultoria\WhatsappCloudApi\Models\Chat;
 use Sdkconsultoria\WhatsappCloudApi\Models\Message;
 use Sdkconsultoria\WhatsappCloudApi\Models\WabaPhone;
 use Sdkconsultoria\WhatsappCloudApi\Services\MediaManagerService;
@@ -148,4 +153,52 @@ class ReceivedMessageTest extends TestCase
             'x-hub-signature' => $signature,
         ];
     }
+
+    public function test_recive_text_message_new_bot()
+    {
+        Assistant::factory()->create();
+        $messageId = 'wamid.'.$this->faker()->numberBetween(111, 450);
+        $wabaPhone = WabaPhone::factory()->create();
+        $chat = Chat::findOrCreateChat('16315551234', $wabaPhone);
+        $chat->bot = true;
+        $chat->save();
+
+        Event::fake();
+        Http::fake([
+            '*/threads/runs' => Http::response(ThreadFakeResponses::createdAndRunThread(), 200),
+            '*/threads/thread_Hklgt9a1cgrSFhQpjcuKLwb6/runs/run_KpRc1KmHmj4pTtfwl1k0VAZp' => Http::response(RunFakeResponses::getRun(), 200),
+            '*/threads/thread_Hklgt9a1cgrSFhQpjcuKLwb6/messages' => Http::response(RunFakeResponses::getMessages(), 200),
+        ]);
+
+        $response = $this->post(route('meta.webhook'), FakeReceivedMessage::textMessage($wabaPhone, $messageId));
+        $response->assertStatus(200);
+
+        Event::assertDispatched(NewWhatsappMessageHook::class);
+        Event::assertDispatched(MessageReady::class);
+    }
+
+    // public function test_recive_text_message_bot()
+    // {
+    //     Assistant::factory()->create();
+    //     $messageId = 'wamid.'.$this->faker()->numberBetween(111, 450);
+    //     $wabaPhone = WabaPhone::factory()->create();
+    //     $chat = Chat::findOrCreateChat('16315551234', $wabaPhone);
+    //     $chat->bot = true;
+    //     $chat->save();
+
+    //     Event::fake();
+    //     Http::fake([
+    //         '*/threads' => Http::response(ThreadFakeResponses::createdThread(), 200),
+    //         '*/threads/thread_iPddOOFKpb2lhXRDpj2P4wUH/messages' => Http::response(ThreadFakeResponses::addedMessageThread(), 200),
+    //         '*/threads/thread_iPddOOFKpb2lhXRDpj2P4wUH/runs' => Http::response(RunFakeResponses::addedRunToThread(), 200),
+    //         '*/threads/thread_iPddOOFKpb2lhXRDpj2P4wUH/runs/run_KpRc1KmHmj4pTtfwl1k0VAZp' => Http::response(RunFakeResponses::getRun(), 200),
+    //         '*/threads/thread_iPddOOFKpb2lhXRDpj2P4wUH/messages' => Http::response(RunFakeResponses::getMessages(), 200),
+    //     ]);
+
+    //     $response = $this->post(route('meta.webhook'), FakeReceivedMessage::textMessage($wabaPhone, $messageId));
+    //     $response->assertStatus(200);
+
+    //     Event::assertDispatched(NewWhatsappMessageHook::class);
+    //     Event::assertDispatched(MessageReady::class);
+    // }
 }
