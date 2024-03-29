@@ -30,7 +30,7 @@ return new class extends Migration
             $table->smallInteger('status')->default('20');
             $table->string('expiration_timestamp')->nullable();
             $table->string('origin')->nullable();
-            $table->boolean('bot')->default(true);
+            $table->boolean('bot')->default(false);
         });
     }
 
