@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('category');
             $table->string('language');
+            $table->string('type')->default('GENERIC');
             $table->string('template_id');
             // $table->smallInteger('status')->default('20');
             $table->json('content');

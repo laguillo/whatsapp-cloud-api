@@ -21,9 +21,22 @@ class MetaToApp
         foreach ($components as $component) {
             $fixedComponents[$component['type']] = $component;
             unset($fixedComponents[$component['type']]['type']);
+
+            $this->fixSubcomponents($component['type'], $fixedComponents[$component['type']]);
         }
 
         return $fixedComponents;
+    }
+
+    private function fixSubcomponents(string $type, array &$subcomponents): void
+    {
+        switch ($type) {
+            case 'CAROUSEL':
+                foreach ($subcomponents['cards'] as $key => $item) {
+                    $subcomponents['cards'][$key]['components'] = $this->fixComponents($item['components']);
+                }
+                break;
+        }
     }
 
     private function saveTemplate(array $metaTemplate, ?string $wabaId = null): Template

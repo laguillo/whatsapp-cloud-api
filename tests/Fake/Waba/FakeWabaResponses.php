@@ -72,6 +72,124 @@ class FakeWabaResponses
         ];
     }
 
+    public static function fakeTemplateCaroucel()
+    {
+        $template = json_decode('{
+            "name": "summer_carousel_promo_2023",
+            "components": [
+                {
+                    "type": "BODY",
+                    "text": "Summer is here, and we have the freshest produce around! Use code {{1}} to get {{2}} off your next order.",
+                    "example": {
+                        "body_text": [
+                            [
+                                "15OFF",
+                                "15%"
+                            ]
+                        ]
+                    }
+                },
+                {
+                    "type": "CAROUSEL",
+                    "cards": [
+                        {
+                            "components": [
+                                {
+                                    "type": "HEADER",
+                                    "format": "IMAGE",
+                                    "example": {
+                                        "header_handle": [
+                                            "https://scontent.whatsapp.net/v/t61.29466-34/426525185_1338374066855053_8321236007525765883_n.jpg?ccb=1-7&_nc_sid=a80384&_nc_ohc=Yk4S4T-OOMcAb5hQ7zk&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&oh=01_ASDraMGMIs0FoktKjm9fo8k46LvJnR3AQwed0-aRWka8sw&oe=663CEFE5"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "BODY",
+                                    "text": "Rare lemons for unique cocktails. Use code {{1}} to get {{2}} off all produce.",
+                                    "example": {
+                                        "body_text": [
+                                            [
+                                                "15OFF",
+                                                "15%"
+                                            ]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "BUTTONS",
+                                    "buttons": [
+                                        {
+                                            "type": "QUICK_REPLY",
+                                            "text": "Send more like this"
+                                        },
+                                        {
+                                            "type": "URL",
+                                            "text": "Buy now",
+                                            "url": "https://www.luckyshrub.com/shop?promo={{1}}",
+                                            "example": [
+                                                "https://www.luckyshrub.com/shop?promo=summer_lemons_2023"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "components": [
+                                {
+                                    "type": "HEADER",
+                                    "format": "IMAGE",
+                                    "example": {
+                                        "header_handle": [
+                                            "https://scontent.whatsapp.net/v/t61.29466-34/427914944_1163793197871575_3630849530394187134_n.jpg?ccb=1-7&_nc_sid=a80384&_nc_ohc=d_vuChE8Cv8Ab4A_DTX&_nc_ht=scontent.whatsapp.net&edm=AH51TzQEAAAA&oh=01_ASAp_vfdURz-WtNc-qsAR3ALJI19agxP2j_To2oVVYqNEA&oe=663CCC17"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "BODY",
+                                    "text": "Exotic fruit for unique cocktails! Use code {{1}} to get {{2}} off all exotic produce.",
+                                    "example": {
+                                        "body_text": [
+                                            [
+                                                "20OFFEXOTIC",
+                                                "20%"
+                                            ]
+                                        ]
+                                    }
+                                },
+                                {
+                                    "type": "BUTTONS",
+                                    "buttons": [
+                                        {
+                                            "type": "QUICK_REPLY",
+                                            "text": "Send more like this"
+                                        },
+                                        {
+                                            "type": "URL",
+                                            "text": "Buy now",
+                                            "url": "https://www.luckyshrub.com/shop?promo={{1}}",
+                                            "example": [
+                                                "https://www.luckyshrub.com/shop?promo=exotic_produce_2023"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "language": "en_US",
+            "status": "APPROVED",
+            "category": "MARKETING",
+            "id": "123456789"
+        }', true);
+
+        return [
+            'data' => [$template],
+        ];
+    }
+
     public static function fakeBussinesProfile()
     {
         return [

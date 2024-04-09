@@ -25,4 +25,9 @@ class Waba extends Model
         $waba->currency = $wabaInfo['currency'] ?? 'USD';
         $waba->save();
     }
+
+    public function templates()
+    {
+        return $this->hasMany(Template::class, 'waba_id', 'waba_id');
+    }
 }

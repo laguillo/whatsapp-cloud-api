@@ -31,6 +31,26 @@ class WabaManagerTest extends TestCase
 
     }
 
+    public function test_get_templates_from_waba_template_caroucel()
+    {
+        $fakeTemplates = FakeWabaResponses::fakeTemplateCaroucel();
+        Http::fake([
+            '*/message_templates' => Http::response($fakeTemplates, 200),
+        ]);
+
+        $waba = Waba::factory()->create(['waba_id' => '121544050937574']);
+        $this->get(route('waba.getTemplatesFromMeta', ['wabaId' => $waba->waba_id]))->assertStatus(200);
+
+        foreach ($fakeTemplates['data'] as $fakeTemplate) {
+            $this->assertDatabaseHas('templates', [
+                'waba_id' => $waba->waba_id,
+                'name' => $fakeTemplate['name'],
+            ]);
+        }
+
+        $this->assertDatabaseCount('templates', 1);
+    }
+
     public function test_get_waba_info()
     {
         $wabaId = '104996122399160';
