@@ -3,7 +3,7 @@
     <div class="flex">
         <form @submit.prevent="submit" class="flex flex-col gap-2 w-2/3">
             <FormModel v-model:model="model"></FormModel>
-            <button class="btn btn-primary w-ful">Crear Plantilla</button>
+            <button type="submit" class="btn btn-primary w-full">Crear Plantilla</button>
         </form>
         <div class="w-1/3">
             <TemplatePreview :model="model" />
